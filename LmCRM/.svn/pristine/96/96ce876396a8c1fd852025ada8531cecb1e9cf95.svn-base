@@ -1,0 +1,87 @@
+package com.box.entity;
+
+public class User {
+	private int userId;
+	private String userNo;
+	private String userName;
+	private String sex;
+	private String pass;
+	private String phone;
+	private String email;
+	private String joinTime;
+	private String role;
+	private String dept;
+	private String isOnjob;
+	public int getUserId() {
+		return userId;
+	}
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+	public String getUserNo() {
+		return userNo;
+	}
+	public void setUserNo(String userNo) {
+		this.userNo = userNo;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public String getSex() {
+		return sex;
+	}
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+	public String getPass() {
+		return pass;
+	}
+	public void setPass(String pass) {
+		this.pass = pass;
+	}
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getJoinTime() {
+		return joinTime;
+	}
+	public void setJoinTime(String joinTime) {
+		this.joinTime = joinTime;
+	}
+	public String getRole() {
+		return role;
+	}
+	public void setRole(String role) {
+		this.role = role;
+	}
+	public String getDept() {
+		return dept;
+	}
+	public void setDept(String dept) {
+		this.dept = dept;
+	}
+	public String getIsOnjob() {
+		return isOnjob;
+	}
+	public void setIsOnjob(String isOnjob) {
+		this.isOnjob = isOnjob;
+	}
+	@Override
+	public String toString() {
+		return "User [userId=" + userId + ", userNo=" + userNo + ", userName=" + userName + ", sex=" + sex + ", pass="
+				+ pass + ", phone=" + phone + ", email=" + email + ", joinTime=" + joinTime + ", role=" + role
+				+ ", dept=" + dept + ", isOnjob=" + isOnjob + "]";
+	}
+}

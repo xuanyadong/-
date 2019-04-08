@@ -1,0 +1,9 @@
+package com.box.service;
+
+import com.box.entity.User;
+
+public interface UserService {
+
+	User login(String userNo);
+
+}

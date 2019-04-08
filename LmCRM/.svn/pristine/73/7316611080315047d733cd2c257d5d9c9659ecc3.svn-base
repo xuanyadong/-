@@ -1,0 +1,9 @@
+package com.box.dao;
+
+import com.box.entity.User;
+
+public interface UserDao {
+	
+	User login(String userNo);
+
+}

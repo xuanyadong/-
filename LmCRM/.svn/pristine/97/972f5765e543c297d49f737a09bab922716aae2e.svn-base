@@ -1,0 +1,42 @@
+package com.box.controller;
+
+import java.util.HashMap;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.box.entity.DeptInfo;
+import com.box.service.DeptService;
+import com.box.entity.PageInfo;
+
+@RequestMapping("/dept")
+@Controller
+public class DepartmentController {
+	@Autowired
+	private DeptService deptService;
+
+	@ResponseBody
+	@RequestMapping("/listDept.do")
+	public List<HashMap<String, Object>> listDept() {
+		List<HashMap<String, Object>> list = null;
+		list = deptService.listDept();
+		System.out.println(list);
+		return list;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/list.do")
+	public PageInfo list(int count,int ma) {
+		List<DeptInfo> list = null;
+		list = deptService.list();
+		int total=list.size();
+		PageInfo pi = new PageInfo();
+		pi.setCount(total);
+		pi.setList(list);
+		System.out.println(list);
+		return pi;
+	}
+}

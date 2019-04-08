@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.box.dao.DeptDao">
+	<select id="listDept" resultType="hashmap">
+		SELECT
+		tb_item.itemId,tb_item.itemName FROM tb_item JOIN tb_type ON
+		tb_item.typeId=tb_type.typeId WHERE tb_type.typeName='部门'
+	</select>
+	<select id="list" resultType="deptInfo">
+		SELECT 
+		t.deptId deptNo, tp.deptName deptName,tp.userName deptManager,t.numb numb, t.allTask allTask,t.finishedTask finishedTask 
+		FROM 
+		(SELECT 
+		SUM(allTask) allTask,COUNT(*) numb,deptId,SUM(finishedTask) finishedTask 
+		FROM 
+		tb_user GROUP BY deptId) t 
+		JOIN 
+		(SELECT 
+		ti.itemName deptName,tu.deptId deptId, GROUP_CONCAT(tu.userName) userName,tu.roleId roleId 
+		FROM 
+		tb_user tu 
+		JOIN 
+		tb_item ti 
+		ON 
+		tu.deptId=ti.itemId 
+		GROUP BY 
+		ti.itemId 
+		HAVING 
+		tu.roleId &lt; 16) tp 
+		ON 
+		tp.deptid=t.deptId limit #{page},#{pageCount}
+	</select>
+	<select id="listDeptUser" resultType="deptInfo">
+		SELECT 
+		t.deptId deptNo, tp.deptName deptName,tp.userName deptManager,t.numb numb, t.allTask allTask,t.finishedTask finishedTask 
+		FROM 
+		(SELECT 
+		SUM(allTask) allTask,COUNT(*) numb,deptId,SUM(finishedTask) finishedTask 
+		FROM 
+		tb_user GROUP BY deptId) t 
+		JOIN 
+		(SELECT 
+		ti.itemName deptName,tu.deptId deptId, GROUP_CONCAT(tu.userName) userName,tu.roleId roleId 
+		FROM 
+		tb_user tu 
+		JOIN 
+		tb_item ti 
+		ON 
+		tu.deptId=ti.itemId 
+		GROUP BY 
+		ti.itemId 
+		HAVING 
+		tu.roleId &lt; 16) tp 
+		ON 
+		tp.deptid=t.deptId 
+	</select>
+	<select id="listDeptUserById" resultType="deptInfo">
+		SELECT 
+		t.deptId deptNo, tp.deptName deptName,tp.userName deptManager,t.numb numb, t.allTask allTask,t.finishedTask finishedTask 
+		FROM 
+		(SELECT 
+		SUM(allTask) allTask,COUNT(*) numb,deptId,SUM(finishedTask) finishedTask 
+		FROM 
+		tb_user GROUP BY deptId) t 
+		JOIN 
+		(SELECT 
+		ti.itemName deptName,tu.deptId deptId, GROUP_CONCAT(tu.userName) userName,tu.roleId roleId 
+		FROM 
+		tb_user tu 
+		JOIN 
+		tb_item ti 
+		ON 
+		tu.deptId=ti.itemId 
+		GROUP BY 
+		ti.itemId 
+		HAVING 
+		tu.roleId &lt; 16) tp 
+		ON 
+		tp.deptid=t.deptId where t.deptId=#{deptNo}
+	</select>
+</mapper>

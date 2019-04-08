@@ -1,0 +1,14 @@
+package com.box.dao;
+
+import java.util.HashMap;
+import java.util.List;
+
+import com.box.entity.DeptInfo;
+
+public interface DeptDao {
+
+	List<HashMap<String, Object>> listDept();
+
+	List<DeptInfo> list();
+	
+}

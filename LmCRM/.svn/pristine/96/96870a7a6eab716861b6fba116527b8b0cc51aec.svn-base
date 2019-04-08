@@ -1,0 +1,108 @@
+package com.box.controller;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.box.entity.Customer;
+import com.box.entity.Items;
+import com.box.entity.PageInfo;
+import com.box.entity.User;
+import com.box.service.CustomerService;
+
+@RequestMapping("/customer")
+@Controller
+public class CustomerController {
+	@Autowired
+	private CustomerService customerService;
+	
+	  @ResponseBody
+	  @RequestMapping("/listCustomer.do")
+	  public PageInfo listUser(int page,int onePageCount){
+		  List<User> list = customerService.listCustomer(page,onePageCount);
+		  int count = customerService.getAllCustomerCount();
+		  PageInfo info = new PageInfo();
+		  info.setList(list);
+		  info.setCount(count);
+		  return info;
+	  }
+	  @ResponseBody
+	  @RequestMapping("deleteCustomer.do")
+	  public int deleteCustomer(int customerId){
+		  int row=customerService.deleteCustomer(customerId);
+		  if(row!=0){
+			  return row;
+		  }
+		      return 0;
+	  }
+	  
+	  @RequestMapping("/editCustomer.do")
+	  public String editCustomer(int customerId,HttpSession session){
+		  Customer customer =customerService.selectCusById(customerId);
+		  session.setAttribute("customer", customer);
+		  List<Items> status=customerService.selectAllStatus();
+		  session.setAttribute("status", status);
+		return "editOrAddCustomer";
+		  
+	  }
+	  
+	  @RequestMapping("/updateCustomer.do")
+	  public void updateCustomer(Customer customer){
+		  if(customer.getCustomerId()!=0){
+			  customerService.updateCustomer(customer);
+	      }else{
+	    	  customerService.addCustomer(customer);
+		  }
+	  }
+	  
+	  @ResponseBody
+	  @RequestMapping("/getofStaff.do")
+	  public List<User> getofStaff(int status){
+		  if(status==19){
+			  List<User> xj=customerService.getXjUser();
+			  return xj;
+		  }else if(status==20){
+			  List<User> zx=customerService.getZxUser();
+			  return zx;
+		  }else if(status==21){
+			  List<User> sm=customerService.getSmUser();
+			  return sm;
+		  }else if(status==22){
+			  List<User> xs=customerService.getXsUser();
+			  return xs;
+		  }else{
+			  List<User> sh=customerService.getShUser();
+			  return sh;
+		  }
+	  }
+	  
+	  @RequestMapping("/addCustomer.do")
+	  public String addCustomer(HttpSession session){
+		  Customer customer=new Customer();
+		  session.setAttribute("customer", customer);
+		  List<Items> status=customerService.selectAllStatus();
+		  session.setAttribute("status", status);
+		  return "editOrAddCustomer";
+	  }
+	  
+	  @ResponseBody
+	  @RequestMapping("deleteCustomerByIds.do")
+	  public Map<String,String> deleteCustomerByIds(String ids){
+		  String id[]=ids.split(",");
+		  for(String customerId:id){
+			  customerService.deleteCustomer(Integer.parseInt(customerId));
+		  }
+		  Map<String,String> map=new HashMap<String, String>();
+		     map.put("result", "É¾³ý³É¹¦");
+		     return map;
+	  }
+	
+
+}

@@ -1,0 +1,35 @@
+package com.box.dao;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
+
+import com.box.entity.Items;
+import com.box.entity.User;
+
+public interface UserDao {
+	
+	User login(String userNo);
+
+	List<User> listUser(@Param("page")int pages,@Param("count") int onePageCount);
+
+	int getAllUserCount();
+
+	int deleteUser(int userId);
+
+	User selectUserById(int userId);
+
+	List<Items> selectAllDept();
+
+	List<Items> selectAllRole();
+
+	String selectDeptNameById(@Param("deptId")int deptId);
+
+	List<Items> selectAllStatus();
+
+	void updateUser(User user);
+
+	void addUser(User user);
+
+}

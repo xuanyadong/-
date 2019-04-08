@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.box.dao.CustomerDao">
+	<resultMap type="hashmap" id="customerStatus">
+	<result column="status" property="status" jdbcType="VARCHAR"/>
+	<result column="total" property="total" jdbcType="INTEGER"/>
+	</resultMap>
+	<select id="listCustomer" resultType="customer">
+    SELECT tb_customer.customerId,tb_customer.customerName,tb_customer.customerPhone,tb_customer.customerTime,tb_customer.customerEmail,tb_customer.customerSex,tb_customer.userName ofStaff,tb_item.itemName STATUS,tb_customer.comments FROM tb_customer JOIN tb_item ON tb_customer.status=tb_item.itemId LIMIT #{page},#{count}
+	</select>
+	<select id="getAllCustomerCount" resultType="int">
+	SELECT COUNT(*) FROM tb_customer 
+	</select>
+	<delete id="deleteCustomer" parameterType="int">
+	DELETE FROM tb_customer WHERE customerId=#{customerId}
+	</delete>
+	<select id="selectCusById" parameterType="int" resultType="customer">
+	SELECT tb_customer.customerId,tb_customer.customerName,tb_customer.customerPhone,tb_customer.customerTime,tb_customer.customerEmail,tb_customer.customerSex,tb_customer.userName ofStaff,tb_item.itemName STATUS,tb_customer.comments FROM tb_customer JOIN tb_item ON tb_customer.status=tb_item.itemId WHERE customerId=#{customerId}
+	</select>
+	<select id="selectAllStatus" resultType="items">
+	 SELECT itemId,itemName,typeId FROM tb_item WHERE typeId=4
+	</select>
+	<select id="getXjUser" resultType="user">
+	SELECT * FROM tb_user WHERE deptId=1 AND isOnjob=16
+	</select>
+	<select id="getZxUser" resultType="user">
+	SELECT * FROM tb_user WHERE deptId=2 AND isOnjob=16
+	</select>
+	<select id="getSmUser" resultType="user">
+	SELECT * FROM tb_user WHERE deptId=2 AND isOnjob=16
+	</select>
+	<select id="getXsUser" resultType="user">
+	SELECT * FROM tb_user WHERE deptId=3 AND isOnjob=16
+	</select>
+	<select id="getShUser" resultType="user">
+	SELECT * FROM tb_user WHERE deptId=4 AND isOnjob=16
+	</select>
+	<select id="selectUserById" parameterType="int" resultType="user">
+	SELECT * FROM tb_user WHERE userId=#{userId}
+	</select>
+	<update id="updateCustomer">
+	UPDATE tb_customer SET customerName=#{customer.customerName},customerPhone=#{customer.customerPhone},customerEmail=#{customer.customerEmail},
+	customerTime=#{customer.customerTime},customerEmail=#{customer.customerEmail},customerSex=#{customer.customerSex},userName=#{userName},
+	userId=#{userId},STATUS=#{customer.status},comments=#{customer.comments} WHERE customerId=#{customer.customerId}
+	</update>
+	<insert id="addCustomer">
+	INSERT INTO tb_customer(customerName,customerPhone,customerTime,customerEmail,customerSex,userName,userId,STATUS,comments)VALUES(#{customer.customerName},#{customer.customerPhone},#{customer.customerTime},
+	#{customer.customerEmail},#{customer.customerSex},#{userName},#{userId},#{customer.status},#{customer.comments})
+	</insert>
+	<update id="updateUserAllTask" parameterType="int">
+	 UPDATE tb_user SET allTask=allTask+1 WHERE userId=#{userId}
+	</update>
+	<select id="listCustomerStatus" resultMap="customerStatus">
+	SELECT tb_item.itemName STATUS,COUNT(tb_customer.status) total FROM tb_customer JOIN tb_item ON tb_customer.status=tb_item.itemId GROUP BY tb_customer.status
+	</select>
+</mapper>

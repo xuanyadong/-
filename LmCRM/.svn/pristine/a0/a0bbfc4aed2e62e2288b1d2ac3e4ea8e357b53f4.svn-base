@@ -1,0 +1,22 @@
+package com.box.controller;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@RequestMapping("/pageOffice")
+@Controller
+public class PageOfficeController{
+	@RequestMapping("/leave.do")
+	public String leave(HttpSession session) {
+		System.out.println(1);
+		session.setAttribute("fileId", "doc/test.doc");
+		return "editfile";
+	}
+	
+	@RequestMapping("/saveFile.do")
+	public String saveFile(){
+		return "SaveFile";
+	}
+}

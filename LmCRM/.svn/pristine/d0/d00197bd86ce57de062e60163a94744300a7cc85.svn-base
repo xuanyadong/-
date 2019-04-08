@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.box.dao.UserDao">
+	<resultMap id="BaseResultMap" type="com.box.entity.User">
+		<result column="userId" property="userId" jdbcType="INTEGER" />
+		<result column="userNo" property="userNo" jdbcType="VARCHAR" />
+		<result column="userName" property="userName" jdbcType="VARCHAR" />
+		<result column="sex" property="sex" jdbcType="VARCHAR" />
+		<result column="pass" property="pass" jdbcType="VARCHAR" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="joinTime" property="joinTime" jdbcType="VARCHAR" />
+		<result column="role" property="role" jdbcType="VARCHAR" />
+		<result column="dept" property="dept" jdbcType="VARCHAR" />
+		<result column="isOnjob" property="isOnjob" jdbcType="VARCHAR" />
+	</resultMap>
+	<resultMap type="hashmap" id="userTask">
+		<result column="未完成" property="未完成" jdbcType="INTEGER"/>
+		<result column="已完成" property="已完成" jdbcType="INTEGER"/>
+	</resultMap>
+	<!-- <sql id="Base_Column_List"> id, name, password, age </sql> 查询用户 <select 
+		id="queryByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer"> 
+		select <include refid="Base_Column_List" /> from user where id = #{id,jdbcType=INTEGER} 
+		</select> -->
+	<select id="login" parameterType="String" resultType="user">
+		SELECT
+		tb_user.userId,tb_user.userNo,tb_user.userName,tb_user.sex,tb_user.pass,tb_user.phone,tb_user.email,tb_user.joinTime,tb_item.itemName
+		role,ti.itemName dept,it.itemName isOnjob FROM tb_user JOIN tb_item ON
+		tb_user.roleId=tb_item.itemId JOIN tb_item ti ON
+		tb_user.deptId=ti.itemId JOIN tb_item it ON tb_user.isOnjob=it.itemId where tb_user.userNo=#{userNo}
+	</select>
+	
+	<select id="listUser" resultType="user">
+	SELECT tb_user.userId,tb_user.userNo,tb_user.userName,tb_user.sex,tb_user.pass,tb_user.phone,tb_user.email,tb_user.joinTime,tb_item.itemName role,ti.itemName dept,it.itemName isOnjob FROM tb_user JOIN tb_item ON tb_user.roleId=tb_item.itemId JOIN tb_item ti ON tb_user.deptId=ti.itemId JOIN  tb_item it ON tb_user.isOnjob=it.itemId limit #{page},#{count}
+	</select>
+	
+	<select id="getAllUserCount" resultType="int">
+	SELECT COUNT(*) FROM tb_user
+	</select>
+	<delete id="deleteUser" parameterType="int">
+	DELETE FROM tb_user WHERE userId=#{userId}
+	</delete>
+	<select id="selectUserById" parameterType="int" resultType="user">
+	SELECT tb_user.userId,tb_user.userNo,tb_user.userName,tb_user.sex,tb_user.pass,tb_user.phone,tb_user.email,tb_user.joinTime,tb_item.itemName role,ti.itemName dept,it.itemName isOnjob FROM tb_user JOIN tb_item ON tb_user.roleId=tb_item.itemId JOIN tb_item ti ON tb_user.deptId=ti.itemId JOIN  tb_item it ON tb_user.isOnjob=it.itemId where userId=#{userId}
+	</select>
+	<select id="selectAllDept" resultType="items">
+    SELECT itemId,itemName,typeId FROM tb_item WHERE typeId=1
+	</select>
+	<select id="selectAllRole" resultType="items">
+    SELECT itemId,itemName,typeId FROM tb_item WHERE typeId=2
+	</select>
+	<select id="selectDeptNameById" parameterType="int" resultType="String">
+	SELECT itemName FROM tb_item WHERE itemId=#{deptId}
+	</select>
+	<select id="selectAllStatus" resultType="items">
+	SELECT itemId,itemName FROM tb_item WHERE typeId=3
+	</select>
+    <update id="updateUser" parameterType="user" >
+	UPDATE tb_user SET userName=#{userName},sex=#{sex},pass=#{pass},
+	phone=#{phone},email=#{email},roleId=#{role},deptId=#{dept},
+	isOnjob=#{isOnjob} WHERE userId=#{userId}
+	</update>
+	<insert id="addUser">
+	INSERT INTO tb_user(userNo,userName,sex,pass,phone,email,joinTime,roleId,deptId,isOnjob)VALUES
+	(#{userNo},#{userName},#{sex},#{pass},#{phone},#{email},#{joinTime},#{role},#{dept},#{isOnjob})
+	</insert>
+	<select parameterType="int" id="getUserTask" resultMap="userTask">
+	SELECT (allTask-finishedTask) '未完成',finishedTask '已完成' FROM tb_user WHERE userId=#{userId}
+	</select>
+
+</mapper>

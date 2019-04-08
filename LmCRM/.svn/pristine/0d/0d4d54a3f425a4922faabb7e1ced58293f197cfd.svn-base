@@ -1,0 +1,32 @@
+package com.box.service;
+
+import java.util.List;
+
+import com.box.entity.DeptInfo;
+import com.box.entity.Items;
+import com.box.entity.User;
+
+public interface UserService {
+
+	User login(String userNo);
+
+	List<User> listUser(int page, int onePageCount);
+
+	int getAllUserCount();
+
+	int deleteUser(int userId);
+
+	User selectUserById(int userId);
+
+	List<Items> selectAllDept();
+
+
+	List<Items> selectRole(int deptId);
+
+	List<Items> selectAllStatus();
+
+	void updateUser(User user);
+
+	void addUser(User user);
+
+}
